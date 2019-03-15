@@ -18,8 +18,8 @@ public class AuthFilter implements Filter {
         HttpServletResponse resp = (HttpServletResponse) servletResponse;
 
         if (null == req.getSession(false)) {
-            req.setAttribute("message", "Session timeout.");
-            req.getRequestDispatcher("login.jsp").forward(req, resp);
+            req.setAttribute("message", " ");
+            req.getRequestDispatcher("views/login.jsp").forward(req, resp);
         } else {
             filterChain.doFilter(req, resp);
         }

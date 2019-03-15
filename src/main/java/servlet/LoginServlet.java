@@ -1,19 +1,24 @@
 package servlet;
 
-import dao.UserDataAccessObject;
+import dao.ProductDAO;
+import dao.UserDAO;
+import model.ProductModel;
 import model.UserModel;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import java.io.IOException;
+import java.util.List;
 
 public class LoginServlet extends HttpServlet {
-    private UserDataAccessObject userDAO;
+    private UserDAO userDAO;
+    private ProductDAO productDAO;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
-        userDAO = new UserDataAccessObject();
+        userDAO = new UserDAO();
+        productDAO = new ProductDAO();
     }
 
     @Override
@@ -37,20 +42,20 @@ public class LoginServlet extends HttpServlet {
                 cookie_coupon.setMaxAge(60 * 60 * 24 * 31);
                 resp.addCookie(cookie_coupon);
             } else {
-                for (Cookie cookie : req.getCookies()) {
-                    if (cookie.getName().equals("username") || cookie.getName().equals("remember_me")) {
-                        cookie.setMaxAge(0);
-                        cookie.setValue("");
-                        cookie.setPath("/");
-                        resp.addCookie(cookie);
-                    }
-                }
+                Cookie cookie_username = new Cookie("username", null);
+                cookie_username.setMaxAge(0);
+                resp.addCookie(cookie_username);
+
+                Cookie cookie_remember_me = new Cookie("remember_me", null);
+                cookie_remember_me.setMaxAge(0);
+                resp.addCookie(cookie_remember_me);
             }
 
-            req.getRequestDispatcher("landing.jsp").forward(req, resp);
+            req.setAttribute("productList", productDAO.getAllProducts());
+            req.getRequestDispatcher("views/products.jsp").forward(req, resp);
         } else {
             req.setAttribute("message", "Invalid username and/or password.");
-            req.getRequestDispatcher("login.jsp").forward(req, resp);
+            req.getRequestDispatcher("views/login.jsp").forward(req, resp);
         }
     }
 }

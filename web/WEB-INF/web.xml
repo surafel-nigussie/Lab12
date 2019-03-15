@@ -5,12 +5,12 @@
          version="4.0">
 
     <welcome-file-list>
-        <welcome-file>login.jsp</welcome-file>
+        <welcome-file>views/login.jsp</welcome-file>
     </welcome-file-list>
 
     <session-config>
         <session-timeout>
-            1
+            10
         </session-timeout>
     </session-config>
 
@@ -21,7 +21,8 @@
 
     <filter-mapping>
         <filter-name>AuthFilter</filter-name>
-        <url-pattern>/*</url-pattern>
+        <servlet-name>LoginServlet</servlet-name>
+        <servlet-name>LandingServlet</servlet-name>
     </filter-mapping>
 
     <servlet>
@@ -42,6 +43,16 @@
     <servlet-mapping>
         <servlet-name>LandingServlet</servlet-name>
         <url-pattern>/landing</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ShoppingCartServlet</servlet-name>
+        <servlet-class>servlet.ShoppingCartServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>ShoppingCartServlet</servlet-name>
+        <url-pattern>/cart</url-pattern>
     </servlet-mapping>
 
 </web-app>
